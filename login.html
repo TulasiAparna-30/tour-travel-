@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Register - Explore World</title>
+    <style>
+        /* --- CSS Reset & Variables --- */
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --text-dark: #333;
+            --text-light: #666;
+            --white: #ffffff;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            width: 100%;
+            /* Neat and Colorful Animated Background */
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Navigation Bar --- */
+        header {
+            /* Glassmorphism style for Nav */
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0 40px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 70px;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            /* Space between items side-by-side */
+            gap: 25px; 
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Active state indicator */
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* --- Main Content Container --- */
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .auth-box {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        /* --- Tab Switcher --- */
+        .tab-header {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: var(--text-light);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            bottom: -2px;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        /* --- Forms --- */
+        .form-container {
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-container.active {
+            display: flex;
+        }
+
+        .input-group {
+            position: relative;
+            text-align: left;
+        }
+
+        .input-group label {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            outline: none;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            background: #fff;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(78, 84, 200, 0.4);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            font-size: 0.9rem;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        /* --- Toast Notification --- */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+        .toast.success { background-color: #28a745; }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            nav {
+                flex-direction: column;
+                height: auto;
+                padding: 15px;
+            }
+            .nav-links {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with Navigation -->
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Explore World</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <!-- Highlighting the current page -->
+                <li><a href="#" class="active">Login/Registration</a></li>
+                <li><a href="destinations.html">Destination</a></li>
+                <li><a href="tour package.html">Tour Package</a></li>
+                <li><a href="reviews.html">Review</a></li>
+                <li><a href="booking.html">Booking</a></li>
+                <li><a href="admin.html">Admin Panel</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="auth-box">
+            <h2 style="margin-bottom: 20px; color: var(--primary-color);">Welcome</h2>
+            
+            <!-- Tab Switcher -->
+            <div class="tab-header">
+                <button class="tab-btn active" onclick="openTab('login')">Login</button>
+                <button class="tab-btn" onclick="openTab('register')">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="form-container active" onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="form-container" onsubmit="handleRegister(event)">
+                <div class="input-group">
+                    <input type="text" placeholder="Full Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Create Password" required>
+                </div>
+                <button type="submit" class="submit-btn">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Explore World Travel & Tourism</p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast success">Action Successful!</div>
+
+    <script>
+        // Function to switch between Login and Register tabs
+        function openTab(tabName) {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const loginBtn = document.querySelector('.tab-btn:nth-child(1)');
+            const registerBtn = document.querySelector('.tab-btn:nth-child(2)');
+
+            if (tabName === 'login') {
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+                loginBtn.classList.add('active');
+                registerBtn.classList.remove('active');
+            } else {
+                loginForm.classList.remove('active');
+                registerForm.classList.add('active');
+                loginBtn.classList.remove('active');
+                registerBtn.classList.add('active');
+            }
+        }
+
+        // Function to show toast notification
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = "toast show success";
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("show", ""); 
+            }, 3000);
+        }
+
+        // Handle Login Submission
+        function handleLogin(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.textContent;
+            
+            btn.textContent = "Logging in...";
+            setTimeout(() => {
+                btn.textContent = originalText;
+                showToast("Login Successful! Redirecting...");
+            }, 1000);
+        }
+
+        // Handle Registration Submission
+        function handleRegister(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.textContent;
+            
+            btn.textContent = "Creating Account...";
+            setTimeout(() => {
+                btn.textContent = originalText;
+                showToast("Registration Successful! Please Login.");
+                openTab('login'); // Switch back to login tab
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews - Explore World</title>
+    <style>
+        /* --- CSS Reset & Variables --- */
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --accent-color: #ff6b6b;
+            --star-color: #ffc107;
+            --text-dark: #2c3e50;
+            --text-light: #666;
+            --white: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            width: 100%;
+            color: var(--text-dark);
+            /* Colorful animated background */
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            padding-bottom: 50px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Header --- */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- Main Layout --- */
+        .main-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr; /* Form on left, Reviews on right */
+            gap: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr; /* Stack on mobile */
+            }
+        }
+
+        /* --- Cards --- */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        /* --- Form Styling --- */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .input-group input, 
+        .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .input-group input:focus, 
+        .input-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* --- Star Rating System --- */
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse; /* This allows CSS hover to work nicely */
+            justify-content: flex-end;
+            gap: 5px;
+        }
+
+        .star-rating input {
+            display: none; /* Hide the radio buttons */
+        }
+
+        .star-rating label {
+            cursor: pointer;
+            font-size: 2rem;
+            color: #ddd;
+            transition: color 0.2s;
+            margin: 0;
+        }
+
+        /* Fill stars on hover and check */
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input:checked ~ label {
+            color: var(--star-color);
+        }
+
+        /* --- Submit Button --- */
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(78, 84, 200, 0.3);
+        }
+
+        /* --- Review List Styling --- */
+        .review-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-height: 700px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Scrollbar styling */
+        .review-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        .review-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .review-list::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        .review-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            animation: slideIn 0.5s ease-out;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .reviewer-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+        }
+
+        .review-stars {
+            color: var(--star-color);
+        }
+
+        .review-text {
+            color: var(--text-light);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .review-date {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* --- Toast Notification --- */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            right: 30px;
+            bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 0.95rem;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+        
+        .toast.success { background-color: #28a745; }
+    </style>
+</head>
+<body>
+
+    <header>
+       
+          <div class="logo"><h3>Explore World</h3></div>
+          <br>
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+       
+       
+    
+               <nav>
+            <a href="home.html">Home</a>
+            <a href="login.html">Login/Register</a>
+            <a href="destinations.html">Destinations</a>
+            <a href="tour package.html">Tour Packages</a>
+            <a href="booking.html">Booking</a>
+            <a href="reviews.html">Reviews</a>
+            <a href="admin.html">Admin Panel</a>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        
+        <!-- Left Column: Write a Review Form -->
+        <section class="card">
+            <h2>Write a Review</h2>
+            <form id="review-form">
+                <div class="input-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" placeholder="e.g. Alice Walker" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Your Rating</label>
+                    <!-- Interactive Star Rating -->
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5" required/><label for="star5" title="5 stars">★</label>
+                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars">★</label>
+                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars">★</label>
+                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars">★</label>
+                        <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star">★</label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="comment">Your Experience</label>
+                    <textarea id="comment" placeholder="Share your travel experience..." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Review</button>
+            </form>
+        </section>
+
+        <!-- Right Column: List of Reviews -->
+        <section class="card" style="background: rgba(255,255,255,0.4); backdrop-filter: none;">
+            <h2>Recent Reviews</h2>
+            <div class="review-list" id="review-container">
+                
+                <!-- Existing Review 1 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="reviewer-name">John Doe</span>
+                        <span class="review-stars">★★★★★</span>
+                    </div>
+                    <p class="review-text">Europe Tour was amazing! The guides were professional and the itinerary was perfectly planned. Highly recommended.</p>
+                    <div class="review-date">Oct 15, 2026</div>
+                </div>
+
+                <!-- Existing Review 2 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="reviewer-name">Jane Smith</span>
+                        <span class="review-stars">★★★★☆</span>
+                    </div>
+                    <p class="review-text">Maldives package was superb! The water villa was a dream come true. Only minor issue was the flight delay.</p>
+                    <div class="review-date">Oct 10, 2026</div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Explore World Travel & Tourism</p>
+    </footer>
+
+    <!-- Toast Notification Element -->
+    <div id="toast" class="toast success">Review Submitted!</div>
+
+    <script>
+        // Handle Form Submission
+        document.getElementById('review-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get values
+            const name = document.getElementById('name').value;
+            const comment = document.getElementById('comment').value;
+            
+            // Get selected rating
+            const ratingInputs = document.getElementsByName('rating');
+            let ratingValue = 0;
+            for(let i = 0; i < ratingInputs.length; i++) {
+                if(ratingInputs[i].checked) {
+                    ratingValue = ratingInputs[i].value;
+                    break;
+                }
+            }
+
+            // Generate star string based on value
+            let starsHTML = '';
+            for(let i = 0; i < 5; i++) {
+                starsHTML += i < ratingValue ? '★' : '☆';
+            }
+
+            // Get current date
+            const date = new Date();
+            const dateString = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            // Create new review card element
+            const newReview = document.createElement('div');
+            newReview.className = 'review-card';
+            newReview.innerHTML = `
+                <div class="review-header">
+                    <span class="reviewer-name">${escapeHtml(name)}</span>
+                    <span class="review-stars">${starsHTML}</span>
+                </div>
+                <p class="review-text">${escapeHtml(comment)}</p>
+                <div class="review-date">${dateString}</div>
+            `;
+
+            // Add to list (at the top)
+            const container = document.getElementById('review-container');
+            container.insertBefore(newReview, container.firstChild);
+
+            // Reset form
+            document.getElementById('review-form').reset();
+
+            // Show success message
+            showToast("Thank you! Your review has been posted.");
+        });
+
+        // Function to show toast notification
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = "toast show success";
+            setTimeout(function(){ 
+                toast.className = toast.className.replace("show", ""); 
+            }, 3000);
+        }
+
+        // Security Helper: Prevent XSS
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+    </script>
+</body>
+</html>

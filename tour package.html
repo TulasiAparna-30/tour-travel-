@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Packages - Explore World</title>
+    <!-- Using Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- CSS Reset & Variables --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #0056b3;
+            --accent-color: #ff9f43;
+            --text-dark: #333;
+            --text-light: #f4f4f4;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --shadow: 0 10px 30px rgba(0,0,0,0.15);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* Colorful Animated Background */
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #ff9a9e, #fad0c4);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Navigation Bar --- */
+        header {
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        /* Highlight active page */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Button style for specific links */
+        .nav-links a.highlight {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .nav-links a.highlight:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .nav-links a.highlight::after {
+            display: none;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* --- Main Content --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            flex: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: white; /* White text stands out on colorful background */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* --- Grid Layout for Cards --- */
+        .cards {
+            display: grid;
+            /* Responsive Grid: Auto-fit columns with min width of 300px */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center; /* Centering text inside card */
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .card-image-wrapper {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .card h4 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 30px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #222;
+            color: #aaa;
+            text-align: center;
+            padding: 2rem;
+            margin-top: auto;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                right: 0;
+                width: 100%;
+                background-color: var(--glass-bg);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header>
+        <nav>
+            <a href="home.html" class="logo">Explore World</a>
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <!-- EXACT NAV BAR ITEMS REQUESTED -->
+                <li><a href="home.html">Home</a></li>
+                <li><a href="login.html" class="highlight">Login / Register</a></li>
+                <li><a href="destinations.html">Destination</a></li>
+                <li><a href="tour package.html" class="active">Tour Package</a></li>
+                <li><a href="booking.html">Booking</a></li>
+                <li><a href="reviews.html">Review</a></li>
+                <li><a href="admin.html">Admin Panel</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="packages">
+            <div class="section-header">
+                <h2>Our Tour Packages</h2>
+            </div>
+            
+            <div class="cards">
+                <!-- Card 1: Europe -->
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <!-- Using placeholder image. Replace src with your local path if needed -->
+                        <img src="C:\Users\syamm\OneDrive\Pictures\Screenshots\Screenshot 2026-01-27 105132.png" alt="Europe Tour">
+                    </div>
+                    <div class="card-content">
+                        <h4>Europe Tour</h4>
+                        <p>10 days, $2000, covering France, Italy, Germany.</p>
+                        <a href="booking.html" class="btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Card 2: Asia -->
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <img src="C:\Users\syamm\OneDrive\Pictures\Screenshots\Screenshot 2026-01-27 105329.png" alt="Asia Tour">
+                    </div>
+                    <div class="card-content">
+                        <h4>Asia Tour</h4>
+                        <p>12 days, $1800, covering Japan, Thailand, India.</p>
+                        <a href="booking.html" class="btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Card 3: America -->
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <img src="C:\Users\syamm\OneDrive\Pictures\Screenshots\Screenshot 2026-01-27 105531.png" alt="America Tour">
+                    </div>
+                    <div class="card-content">
+                        <h4>America Tour</h4>
+                        <p>14 days, $2500, covering USA and Canada.</p>
+                        <a href="booking.html" class="btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Card 4: Africa (New) -->
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <img src="https://picsum.photos/seed/africa/550/300" alt="Africa Safari">
+                    </div>
+                    <div class="card-content">
+                        <h4>Africa Safari</h4>
+                        <p>8 days, $2200, experience the wild in Kenya and Tanzania.</p>
+                        <a href="booking.html" class="btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Card 5: Australia (New) -->
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <img src="https://picsum.photos/seed/australia/550/300" alt="Australia Adventure">
+                    </div>
+                    <div class="card-content">
+                        <h4>Australia Adventure</h4>
+                        <p>11 days, $2800, explore the Outback and Great Barrier Reef.</p>
+                        <a href="booking.html" class="btn">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Card 6: Middle East (New) -->
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <img src="https://picsum.photos/seed/dubai2/550/300" alt="Middle East Tour">
+                    </div>
+                    <div class="card-content">
+                        <h4>Middle East Tour</h4>
+                        <p>7 days, $1900, luxury shopping and desert safari in Dubai.</p>
+                        <a href="booking.html" class="btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Explore World Travel & Tourism</p>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

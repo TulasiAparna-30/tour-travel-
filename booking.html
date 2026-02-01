@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking - Explore World</title>
+    <!-- Using Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- CSS Reset & Variables --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #0056b3;
+            --accent-color: #ff9f43;
+            --text-dark: #333;
+            --text-light: #f4f4f4;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --shadow: 0 10px 30px rgba(0,0,0,0.15);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* Colorful Animated Background */
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #ff9a9e, #fad0c4);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Navigation Bar --- */
+        header {
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.highlight {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .nav-links a.highlight:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .nav-links a.highlight::after {
+            display: none;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* --- Main Content --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            padding-top: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        .section-header {
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* --- Booking Form Section --- */
+        .booking-wrapper {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        input, select {
+            padding: 12px 15px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            outline: none;
+            background: #f9f9f9;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1);
+        }
+
+        button[type="submit"] {
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* --- Grid Section for Images --- */
+        .grid-section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .card-info {
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .card-info h4 {
+            color: var(--secondary-color);
+            font-size: 1rem;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #222;
+            color: #aaa;
+            text-align: center;
+            padding: 2rem;
+            margin-top: auto;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                right: 0;
+                width: 100%;
+                background-color: var(--glass-bg);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header>
+        <nav>
+            <a href="home.html" class="logo">Explore World</a>
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <!-- EXACT NAV BAR ITEMS REQUESTED -->
+                <li><a href="home.html">Home</a></li>
+                <li><a href="login.html" class="highlight">Login / Register</a></li>
+                <li><a href="destinations.html">Destination</a></li>
+                <li><a href="tour package.html">Tour Package</a></li>
+                <li><a href="booking.html" class="active">Booking</a></li>
+                <li><a href="reviews.html">Review</a></li>
+                <li><a href="admin.html">Admin Panel</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Booking Form Section -->
+        <section class="booking">
+            <div class="section-header">
+                <h2>Book Your Trip</h2>
+            </div>
+            
+            <div class="booking-wrapper">
+                <form action="#" method="POST">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="John Doe" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="john@example.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Destination</label>
+                        <input type="text" placeholder="e.g., Paris, New York" required list="destinations">
+                        <datalist id="destinations">
+                            <option value="Paris">
+                            <option value="New York">
+                            <option value="Tokyo">
+                            <option value="Maldives">
+                            <option value="Dubai">
+                        </datalist>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Travel Date</label>
+                        <input type="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Number of Travelers</label>
+                        <input type="number" min="1" placeholder="1" required>
+                    </div>
+                    
+                    <button type="submit">Book Now</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Grid Section (To fulfill request for grid format) -->
+        <section class="grid-section">
+            <h3 class="grid-section-title">Popular Destinations to Book</h3>
+            <div class="cards">
+                <div class="card" onclick="document.querySelector('input[list=\"destinations\"]').value='Paris'">
+                    <img src="https://picsum.photos/seed/paris/300/200" alt="Paris">
+                    <div class="card-info">
+                        <h4>Paris</h4>
+                    </div>
+                </div>
+                <div class="card" onclick="document.querySelector('input[list=\"destinations\"]').value='New York'">
+                    <img src="https://picsum.photos/seed/newyork/300/200" alt="New York">
+                    <div class="card-info">
+                        <h4>New York</h4>
+                    </div>
+                </div>
+                <div class="card" onclick="document.querySelector('input[list=\"destinations\"]').value='Tokyo'">
+                    <img src="https://picsum.photos/seed/tokyo/300/200" alt="Tokyo">
+                    <div class="card-info">
+                        <h4>Tokyo</h4>
+                    </div>
+                </div>
+                <div class="card" onclick="document.querySelector('input[list=\"destinations\"]').value='Maldives'">
+                    <img src="https://picsum.photos/seed/maldives/300/200" alt="Maldives">
+                    <div class="card-info">
+                        <h4>Maldives</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Explore World Travel & Tourism</p>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

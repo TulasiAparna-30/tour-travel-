@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore World - Premium Travel</title>
+    <!-- Using Google Fonts for a modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- CSS Reset & Variables --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #0056b3;
+            --accent-color: #ff9f43;
+            --text-dark: #333;
+            --text-light: #f4f4f4;
+            --bg-overlay: rgba(0, 0, 0, 0.6);
+            --glass-bg: rgba(255, 255, 255, 0.85); /* Slightly more opaque to read over colorful bg */
+            --shadow: 0 10px 30px rgba(0,0,0,0.15);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* Colorful Animated Background */
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #ff9a9e, #fad0c4);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Keyframes for the background animation */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Navigation Bar --- */
+        header {
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(10px); /* Blur effect for modern look */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            flex-wrap: wrap; /* Allows wrapping if screen is small */
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        /* Underline animation for links */
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Specific style for Login/Admin */
+        .nav-links a.highlight {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .nav-links a.highlight:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .nav-links a.highlight::after {
+            display: none; /* Remove underline for buttons */
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* --- Hero Section (Visual Enhancement) --- */
+        .hero {
+            background: linear-gradient(var(--bg-overlay), var(--bg-overlay)), 
+                        url('https://picsum.photos/seed/travelhero/1920/600') center/cover no-repeat;
+            height: 40vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 2rem;
+            border-radius: 0 0 50px 50px; /* Rounded bottom corners */
+            margin-top: 1rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+        }
+
+        /* --- Main Content --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            flex: 1;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(255,255,255,0.8); /* Text shadow for readability on colorful bg */
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        /* --- Grid Layout for Cards --- */
+        .cards {
+            display: grid;
+            /* Responsive Grid: Auto-fit columns with min width of 300px */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9); /* Slightly transparent card */
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            background: #fff; /* Solid white on hover for contrast */
+        }
+
+        .card-image-wrapper {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.1); /* Zoom effect */
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .card .location {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-book {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-book:hover {
+            background-color: var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #222;
+            color: #aaa;
+            text-align: center;
+            padding: 2rem;
+            margin-top: auto;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        .social-icons a {
+            color: white;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                right: 0;
+                width: 100%;
+                background-color: var(--glass-bg);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                display: none; /* Hidden by default on mobile */
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header>
+        <nav>
+            <div class="logo">Explore World</div>
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <!-- NAVIGATION BAR EXACTLY AS REQUESTED -->
+                <li><a href="home.html" class="active">Home</a></li>
+                <li><a href="login.html" class="highlight">Login / Register</a></li>
+                <li><a href="destinations.html">Destination</a></li>
+                <li><a href="tour package.html">Tour Package</a></li>
+                <li><a href="booking.html">Booking</a></li>
+                <li><a href="reviews.html">Review</a></li>
+                <li><a href="admin.html">Admin Panel</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section (Visual Enhancement) -->
+    <section class="hero" id="home">
+        <h1>Discover the World</h1>
+        <p>Experience the most beautiful places on earth with our exclusive tours.</p>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <section class="destinations" id="destinations">
+            <div class="section-title">
+                <h2>Popular Destinations</h2>
+                <p>Top rated locations for your next vacation</p>
+            </div>
+
+            <div class="cards">
+                <!-- Card 1: Paris -->
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <!-- Placeholder image replacing your local path for demo purposes -->
+                        <img src="https://picsum.photos/seed/paris/400/300" alt="Paris">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <div class="location">France</div>
+                            <h4>Paris</h4>
+                            <p>City of Lights, Eiffel Tower, art, and culture.</p>
+                        </div>
+                        <button class="btn-book" onclick="handleBooking('Paris')">Explore Now</button>
+                    </div>
+                </div>
+
+                <!-- Card 2: Maldives -->
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <img src="https://picsum.photos/seed/maldives/400/300" alt="Maldives">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <div class="location">South Asia</div>
+                            <h4>Maldives</h4>
+                            <p>Tropical paradise with stunning beaches and resorts.</p>
+                        </div>
+                        <button class="btn-book" onclick="handleBooking('Maldives')">Explore Now</button>
+                    </div>
+                </div>
+
+                <!-- Card 3: New York -->
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <img src="https://picsum.photos/seed/newyork/400/300" alt="New York">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <div class="location">USA</div>
+                            <h4>New York</h4>
+                            <p>The city that never sleeps – skyscrapers, Broadway, culture.</p>
+                        </div>
+                        <button class="btn-book" onclick="handleBooking('New York')">Explore Now</button>
+                    </div>
+                </div>
+
+                <!-- Card 4: Tokyo (Added) -->
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <img src="https://picsum.photos/seed/tokyo/400/300" alt="Tokyo">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <div class="location">Japan</div>
+                            <h4>Tokyo</h4>
+                            <p>A blend of traditional temples and futuristic neon lights.</p>
+                        </div>
+                        <button class="btn-book" onclick="handleBooking('Tokyo')">Explore Now</button>
+                    </div>
+                </div>
+
+                <!-- Card 5: Rome (Added) -->
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <img src="https://picsum.photos/seed/rome/400/300" alt="Rome">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <div class="location">Italy</div>
+                            <h4>Rome</h4>
+                            <p>The Eternal City, home to the Colosseum and Vatican.</p>
+                        </div>
+                        <button class="btn-book" onclick="handleBooking('Rome')">Explore Now</button>
+                    </div>
+                </div>
+
+                <!-- Card 6: Dubai (Added) -->
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <img src="https://picsum.photos/seed/dubai/400/300" alt="Dubai">
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            <div class="location">UAE</div>
+                            <h4>Dubai</h4>
+                            <p>Luxury shopping, ultramodern architecture, and nightlife.</p>
+                        </div>
+                        <button class="btn-book" onclick="handleBooking('Dubai')">Explore Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <p>&copy; 2026 Explore World Travel & Tourism. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Simple JavaScript for Interactivity -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                navLinks.classList.remove('active'); // Close menu on mobile click
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Booking Interaction (No alerts)
+        function handleBooking(destination) {
+            // Create a temporary toast notification
+            const toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.right = '20px';
+            toast.style.backgroundColor = '#28a745';
+            toast.style.color = 'white';
+            toast.style.padding = '15px 25px';
+            toast.style.borderRadius = '5px';
+            toast.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+            toast.style.zIndex = '2000';
+            toast.style.animation = 'fadeIn 0.5s, fadeOut 0.5s 2.5s';
+            toast.innerHTML = `<i class="fas fa-check-circle"></i> Booking started for ${destination}!`;
+
+            document.body.appendChild(toast);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Add keyframe animations dynamically
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(20px); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
